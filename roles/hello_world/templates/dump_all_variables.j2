@@ -1,0 +1,28 @@
+=== Ansible Tower Job ID {{ tower_job_id }} ===
+Module Variables ("vars"):
+--------------------------------
+{{ vars }}
+
+{#
+{% for host in groups['all'] %}
+{{ vars.hostvars.[host] | to_nice_json }}
+{% endfor %}
+#}
+
+Environment Variables ("environment"):
+--------------------------------
+{{ environment | to_nice_json }} 
+ 
+GROUP NAMES Variables ("group_names"):
+--------------------------------
+{{ group_names | to_nice_json }}
+ 
+GROUPS Variables ("groups"):
+--------------------------------
+{{ groups | to_nice_json }}
+ 
+HOST Variables ("hostvars"):
+--------------------------------
+{% for host in groups['all'] %}
+{{ hostvars[host] | to_nice_json }}
+{% endfor %}

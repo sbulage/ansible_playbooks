@@ -1,0 +1,6 @@
+- name: Hello World Sample
+  hosts: all
+  vars:
+  roles:
+    - hello_world
+
