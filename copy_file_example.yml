@@ -1,3 +1,4 @@
+---
 - name: Copy file from one place to another and replace string
   hosts: all
   vars:
