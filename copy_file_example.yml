@@ -4,10 +4,10 @@
     myvar: Centos
   tasks:
   - name: copy redhat-release
-    file: src=/etc/redhat-release dest=/tmp/modified-release
+    copy: remote_src=True src=/etc/redhat-release dest=/tmp/modified-release
 
   - name: Change redhat string to something else
-    lineinfile: path=/tmp/modified-release regexp='^Red Hat(.*)' line='{{ myvar }}\1' backrefs='yes'
+    lineinfile: dest='/tmp/modified-release' regexp='^Red Hat(.*)' line='{{ myvar }}\1' backrefs=yes
     
 
 
