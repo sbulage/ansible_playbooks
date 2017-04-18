@@ -1,0 +1,154 @@
+---
+
+ec2_region: "eu-central-1"
+
+# Are these passed correctly from Tower?
+aws_creds:
+      AWS_DEFAULT_REGION: "{{ ec2_region }}"
+      AWS_ACCESS_KEY: "{{ aws_access_key }}"
+      AWS_SECRET_ACCESS_KEY: "{{ ec2_secret_access_key }}"   
+
+# Project
+project: "cfme"
+
+# The variables for dev vpc environment
+az1a: "{{ ec2_region }}a"
+az1b: "{{ ec2_region }}b"
+
+vpc_cidr_block: 10.50.0.0/16
+vpc_subnets:
+    - cidr: 10.50.0.0/24
+      az: "{{ az1a }}"
+      resource_tags: { "Name":"{{ environ }}-{{ az1a }}-pub", "environment":"{{ environ }}", "tier" : "public" }
+    - cidr: 10.50.1.0/24
+      az: "{{ az1b }}"
+      resource_tags: { "Name":"{{ environ }}-{{ az1b }}-pub", "environment":"{{ environ }}", "tier" : "public1" }
+    - cidr: 10.50.10.0/24
+      az: "{{ az1a }}"
+      resource_tags: { "Name":"{{ environ }}-{{ az1a }}-priv1", "environment":"{{ environ }}", "tier" : "priv1" }
+    - cidr: 10.50.11.0/24
+      az: "{{ az1b }}" 
+      resource_tags: { "Name":"{{ environ }}-{{ az1b }}-priv1", "environment":"{{ environ }}", "tier" : "priv1" }
+    - cidr: 10.50.20.0/24
+      az: "{{ az1a }}"
+      resource_tags: { "Name":"{{ environ }}-{{ az1a }}-priv2", "environment":"{{ environ }}", "tier" : "priv2" }
+    - cidr: 10.50.21.0/24
+      az: "{{ az1b }}"
+      resource_tags: { "Name":"{{ environ }}-{{ az1b }}-priv2", "environment":"{{ environ }}", "tier" : "priv2" }
+vpc_internet_gateway: "yes"
+
+"vpc_{{ environ }}": "vpc-{{ environ }}-{{ ec2_region}}"
+
+vpc_route_tables_public:
+    - subnets:
+       - 10.50.0.0/24
+       - 10.50.1.0/24
+      routes:
+       - dest: 0.0.0.0/0
+         gw: igw
+      resource_tags: { "Name":"{{ vpc_environ }}", "environment":"{{ environ }}" }
+vpc_nat_instance_id: ami-7604d419 # this image is for Frankfurt
+vpc_nat_instance_type: t2.micro
+#ec2_keypair: ansible_host
+ec2_keypair: ansible_mgmt_eu-central-1
+
+vpc_nat_sec_group:
+   name: "{{ environ + '_vpc_nat_sec_group' }}"
+   desc: the public security group for the nat Instance
+   rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: "{{ vpc_cidr_block }}"
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: "{{ vpc_cidr_block }}"
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: "{{ vpc_cidr_block }}"
+   rules_egress:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+
+vpc_security_groups:
+  - name: "{{ environ }}-web"
+    desc: the security group for the web servers
+    rules:
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      #- proto: tcp
+      #  from_port: 22
+      #  to_port: 22
+      #  cidr_ip: "{{ vpc_cidr_block }}"
+        #group_name: "{{ environ + '_vpc_nat_sec_group' }}"
+
+  - name: "{{ environ }}-app"
+    desc: the security group for the app
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 10.80.0.0/16
+      - proto: tcp
+        #from_port: 8080
+        from_port: 80
+        to_port: 80
+        group_name: "{{ environ }}-web"
+  - name: "{{ environ }}-db"
+    desc: the security group for the db 
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 10.80.0.0/16
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        group_name: "{{ environ }}-app"
+# List of instances to be created in this environment.
+
+vpc_instances:
+  - instance_type: t2.micro
+    image: ami-9bf712f4 # CentOS 7 (x86_64) - with Updates HVM  
+    keypair: "{{ ec2_keypair }}"
+    group: "{{ environ }}-app"
+    assign_public_ip: false
+    instance_tags: 
+        Name: "{{ environ }}_web_server"
+        env: "{{ environ }}"
+        project: "{{ project }}"
+        role: web
+    exact_count: 1
+    count_tag: 
+        Name: "{{ environ }}_web_server"
+    subnet: "{{ environ }}-eu-central-1a-priv1"
+
+# ELB
+elb_name: "{{ environ }}-project"
+elb_sg: 
+  - "{{ environ }}-web"
+elb_zones:
+  - eu-central-1a
+  - eu-central-1b
+elb_ssl_cert_id: "arn:aws:iam::134019217779:server-certificate/mycert.cz-20150201"
+
+# Login name for deployed instances
+ansible_ssh_user: cloud_user
