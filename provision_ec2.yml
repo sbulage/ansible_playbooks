@@ -3,6 +3,8 @@
 - hosts: localhost
   connection: local
   pre_tasks:
+    - name: prepare cloud
+      include: roles/hello_world/tasks/main.yml
     # Include variables about our environment
     - name: Include the variables specific to the environment
       include_vars: envs/{{ environ }}.yml
@@ -10,7 +12,7 @@
   vars:
     - ansible_ssh_user: default
   roles:
-    - { role: hello_world, tags: ['dump_vars'] }
+    # - { role: hello_world, tags: ['dump_vars'] }
     - { role: prepare_cloud, tags: ['prepare_cloud'] }
     - { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
     - { role: provision-ec2, tags: ['ec2'] }
