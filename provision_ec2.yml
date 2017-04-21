@@ -8,7 +8,6 @@
     - { role: hello_world, tags: ['dump_vars'] }
     - { role: prepare_cloud, tags: ['prepare_cloud'] }
 
----
 # Include variables about our environment
 - hosts: localhost
   connection: local
