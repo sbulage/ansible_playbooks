@@ -1,30 +1,34 @@
 ---
 - name: Install pip 
   apt: name=python-pip state=installed
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Install the commandline tools for AWS
   pip: name=awscli state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
  
-- name: Include the variables specific to the vpc
-  include_vars: envs/{{ environ }}
+#- name: Include the variables specific to the vpc
+#  include_vars: envs/{{ environ }}.yml
+
+- debug: var=environ
+- debug: msg="vpc-{{ environ }}-{{ ec2_region }}"
  
 - name: Create the VPC 
-  local_action:
-    module: ec2_vpc
-      state: present
-      region: "{{ ec2_region }}"
-      resource_tags:
-          Name: "vpc-{{ environ }}-{{ ec2_region }}"
-          environment: "{{ environ }}"
-      #ec2_access_key: "{{ ec2_access_key }}"
-      #ec2_secret_key: "{{ ec2_secret_key }}"
-      cidr_block: "{{ vpc_cidr_block }}"
-      subnets: "{{ vpc_subnets }}"
-      dns_support: true
-      dns_hostnames: true
-      internet_gateway: "{{ vpc_internet_gateway|string }}"
-      route_tables: "{{ vpc_route_tables_public }}"
-      wait: true
+  ec2_vpc:
+    state: present
+    region: "{{ ec2_region }}"
+    resource_tags:
+        Name: "vpc-{{ environ }}-{{ ec2_region }}"
+        environment: "{{ environ }}"
+    #ec2_access_key: "{{ ec2_access_key }}"
+    #ec2_secret_key: "{{ ec2_secret_key }}"
+    cidr_block: "{{ vpc_cidr_block }}"
+    subnets: "{{ vpc_subnets }}"
+    dns_support: true
+    dns_hostnames: true
+    internet_gateway: "{{ vpc_internet_gateway|string }}"
+    route_tables: "{{ vpc_route_tables_public }}"
+    wait: true
   register: vpc
 
 - name: Write out a temporary file for mapping subnet to id
@@ -66,6 +70,10 @@
       tier: "public"
   when: environ != "management"
 
+- name: set fact
+  debug: msg="{{ item.id }}"
+  with_items: "{{ vpc.subnets }}"
+
 - name: Create the NAT Instance
   ec2:
     assign_public_ip: true
@@ -87,7 +95,7 @@
     count_tag: 
       Name: "{{ environ + '_nat_instance' }}"
   register: ec2
-  with_items: vpc.subnets
+  with_items: "{{ vpc.subnets }}"
   when: vpc_internet_gateway and item['resource_tags']['tier'] is defined and item['resource_tags']['tier'] == 'public' and
         environ != "management"
 
@@ -122,7 +130,7 @@
     #ec2_access_key: "{{ ec2_access_key }}"
     #ec2_secret_key: "{{ ec2_secret_key }}"
     rules: "{{ item.rules }}"
-  with_items: vpc_security_groups
+  with_items: "{{ vpc_security_groups }}"
   register: security_groups_results
 
 - debug: var=security_groups_results
@@ -140,25 +148,26 @@
       #tier: "public"
       #az: "{{ vpc_subnets.az }}"
 #     with_items: vpc_security_groups
-  with_items: security_groups_results.results
+  with_items: "{{ security_groups_results.results }}"
 
 - name: get VPC id of destination VPC 
   command: "aws ec2 describe-vpcs --region {{ ec2_region }} --filter Name=tag:Name,Values=vpc-{{ environ }}-{{ ec2_region }}"
   register: get_vpc_id_dst
   changed_when: false
+  when: provision_only_from_management == 'yes'
 
- - name: set VPC info for destionation VPC
+- name: set VPC info for destionation VPC
   set_fact: 
     set_vpc_json_dst: "{{ get_vpc_id_dst.stdout | from_json }}"
   changed_when: false
   register: vpc_dst
-
-- debug: var=vpc_dst
+  when: provision_only_from_management == 'yes'
 
 - name: get VPC id of source VPC
   command: "aws ec2 describe-vpcs --region {{ ec2_region }} --filter Name=tag:Name,Values=*management*"
   register: get_vpc_id_src
   changed_when: false
+  when: provision_only_from_management == 'yes'
 
 - name: set VPC info for source VPC
   set_fact:
@@ -166,32 +175,32 @@
     set_vpc_json_src: "{{ get_vpc_id_src.stdout | from_json }}"
   changed_when: false
   register: vpc_src
+  when: provision_only_from_management == 'yes'
 
-- debug: var=vpc_src
  
 - name: Check if only management VPC is created
   set_fact: 
     management_only: 1
-  when: set_vpc_json_dst.Vpcs[0].VpcId == set_vpc_json_src.Vpcs[0].VpcId
+  when: (provision_only_from_management == 'yes') and set_vpc_json_dst.Vpcs[0].VpcId == set_vpc_json_src.Vpcs[0].VpcId
 
 - name: Create VPC peer links between management and other VPCs
-  ec2_vpc_peering:
+  ec2_vpc_peer:
     name: "management-{{ environ }}-peer"
     #source_vpc: "{{ vpc.vpc | subnet_name_filter([management]) }}"
     #source_vpc: vpc-b679d6df
     #source_vpc: "{{ vpc.vpc | vpc_name_filter(vpc_filt) | list | join(', ')}}"
-    source_vpc: "{{ set_vpc_json_src.Vpcs[0].VpcId }}"
+    #source_vpc: "{{ set_vpc_json_src.Vpcs[0].VpcId }}"
+    vpc_id: "{{ set_vpc_json_src.Vpcs[0].VpcId }}"
     #peer_vpc: "{{ vpc.vpc | subnet_name_filter([stage]) }}"
     #peer_vpc: vpc-a662cccf
-    peer_vpc: "{{ vpc.vpc['id'] }}"
+    #peer_vpc: "{{ vpc.vpc['id'] }}"
+    peer_vpc_id: "{{ vpc.vpc['id'] }}"
     #peer_vpc: set_vpc_json_dst.Vpcs[0].Tags[0].Value
     state: present
     #update_routes: true
     region: "{{ ec2_region }}"
   register: vpc_peer_id
-  when: ( vpc.changed and set_vpc_json_dst.Vpcs[0].VpcId is defined and set_vpc_json_src.Vpcs[0].VpcId is defined ) and management_only is not defined
-
-- debug: var=vpc_peer_id
+  when: (provision_only_from_management == 'yes') and (( vpc.changed and set_vpc_json_dst.Vpcs[0].VpcId is defined and set_vpc_json_src.Vpcs[0].VpcId is defined ) and management_only is not defined)
 
 - name: Get the routing table entry for the main table. - peer1
   shell: >

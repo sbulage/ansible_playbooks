@@ -15,6 +15,8 @@ project: "cfme"
 az1a: "{{ ec2_region }}a"
 az1b: "{{ ec2_region }}b"
 
+provision_only_from_management: "no"
+
 vpc_cidr_block: 10.50.0.0/16
 vpc_subnets:
     - cidr: 10.50.0.0/24
@@ -46,11 +48,11 @@ vpc_route_tables_public:
       routes:
        - dest: 0.0.0.0/0
          gw: igw
-      resource_tags: { "Name":"{{ vpc_environ }}", "environment":"{{ environ }}" }
+      resource_tags: { "Name":"vpc_{{ environ }}", "environment":"{{ environ }}" }
 vpc_nat_instance_id: ami-7604d419 # this image is for Frankfurt
 vpc_nat_instance_type: t2.micro
 #ec2_keypair: ansible_host
-ec2_keypair: ansible_mgmt_eu-central-1
+#ec2_keypair: ansible_mgmt_eu-central-1
 
 vpc_nat_sec_group:
    name: "{{ environ + '_vpc_nat_sec_group' }}"
@@ -94,11 +96,11 @@ vpc_security_groups:
         from_port: 443
         to_port: 443
         cidr_ip: 0.0.0.0/0
-      #- proto: tcp
-      #  from_port: 22
-      #  to_port: 22
-      #  cidr_ip: "{{ vpc_cidr_block }}"
-        #group_name: "{{ environ + '_vpc_nat_sec_group' }}"
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+       #group_name: "{{ environ + '_vpc_nat_sec_group' }}"
 
   - name: "{{ environ }}-app"
     desc: the security group for the app

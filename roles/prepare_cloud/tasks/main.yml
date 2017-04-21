@@ -1,0 +1,18 @@
+---
+- name: create dir for generated keys
+  file: path=/var/tmp/cloud_ssh_keys state=directory
+
+- name: Generate SSH keys
+  shell: ssh-keygen -b 2048 -t rsa -f /var/tmp/cloud_ssh_keys/"{{ environ }}_ssh_key" -q -N ""
+  args:
+    chdir: /var/tmp/cloud_ssh_keys/
+    creates: "{{ environ }}_ssh_key"
+
+- name: Upload ssh key for NAT instance
+  ec2_key:
+    name: "{{ environ }}_ssh_key"
+    key_material: "{{ item }}"
+  with_file: "/var/tmp/cloud_ssh_keys/{{ environ }}_ssh_key.pub"
+
+- name: set name of ssh key
+  set_fact: ec2_keypair="{{ environ }}_ssh_key" 

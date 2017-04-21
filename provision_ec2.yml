@@ -5,13 +5,14 @@
   pre_tasks:
     # Include variables about our environment
     - name: Include the variables specific to the environment
-      include_vars: envs/{{ environ }}
+      include_vars: envs/{{ environ }}.yml
   tags: env
   vars:
     - ansible_ssh_user: default
   roles:
+    - { role: prepare_cloud, tags: ['prepare_cloud'] }
     - { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
-    - { role: provision-ec2-new, tags: ['ec2'] }
+    - { role: provision-ec2, tags: ['ec2'] }
 
 
 
