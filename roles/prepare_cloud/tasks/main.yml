@@ -12,6 +12,7 @@
   ec2_key:
     name: "{{ environ }}_ssh_key"
     key_material: "{{ item }}"
+    region: "{{ ec2_region }}"
   with_file: "/var/tmp/cloud_ssh_keys/{{ environ }}_ssh_key.pub"
 
 - name: set name of ssh key

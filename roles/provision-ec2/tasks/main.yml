@@ -11,6 +11,7 @@
     assign_public_ip: "{{ item.assign_public_ip| default(False) }}"
     instance_type: "{{ item.instance_type }}"
     image: "{{ item.image }}"
+    region: "{{ ec2_region }}"
     #vpc_subnet_id: "{{ subnet_maps[item.subnet] }}"
     #vpc_subnet_id: "{{ vpc.subnets | subnet_name_filter(['management-eu-central-1a-mgmt']) | join(', ') }}"
     #vpc_subnet_id: "{{ vpc.subnets | subnet_name_filter(['stage-eu-central-1a-pub']) | join(', ') }}"
