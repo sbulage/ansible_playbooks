@@ -3,10 +3,10 @@
 ec2_region: "eu-central-1"
 
 # Are these passed correctly from Tower?
-aws_creds:
-      AWS_DEFAULT_REGION: "{{ ec2_region }}"
-      AWS_ACCESS_KEY: "{{ aws_access_key }}"
-      AWS_SECRET_ACCESS_KEY: "{{ ec2_secret_access_key }}"   
+# aws_creds:
+#      AWS_DEFAULT_REGION: "{{ ec2_region }}"
+#      AWS_ACCESS_KEY: "{{ aws_access_key }}"
+#      AWS_SECRET_ACCESS_KEY: "{{ ec2_secret_access_key }}"   
 
 # Project
 project: "cfme"
