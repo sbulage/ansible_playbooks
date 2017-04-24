@@ -1,7 +1,7 @@
 ---
-- name: Hello World Sample
+- name: Dump all variables known to Ansible/Tower and write them to stdout/file
   hosts: all
   vars:
   roles:
-    - hello_world
+    - dump_all_variables
 
