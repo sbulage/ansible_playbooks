@@ -2,6 +2,6 @@
 - name: Gather all registered virtual machines
   local_action:
     module: vmware_vm_facts
-    hostname: "{{ vmware_host }}"
+    hostname: "{{ vmware_hostname }}"
     username: "{{ vmware_username }}"
     password: "{{ vmware_password }}"
