@@ -2,4 +2,13 @@
 - hosts: all
   tasks:
     - name: touch file in /var/tmp
-      file: state=touch path=/var/tmp/test_touch_file_as_root.txt owner=root group=root mode=0644
+      file: 
+        state: touch 
+        path: /var/tmp/test_touch_file_as_root.txt 
+        owner: root 
+        group: root 
+        mode: 0644
+        seuser: unconfined_u
+        serole: object_r
+        setype: user_tmp_t
+        selevel: s0
