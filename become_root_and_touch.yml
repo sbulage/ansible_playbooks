@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - name: touch file in /var/tmp
+      file: state=touch path=/var/tmp/test_touch_file_as_root.txt owner=root group=root mode=0644
