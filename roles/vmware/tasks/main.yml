@@ -5,3 +5,7 @@
     hostname: "{{ vmware_hostname }}"
     username: "{{ vmware_username }}"
     password: "{{ vmware_password }}"
+  register: all_vms
+
+- name: List VMs to stdout
+  debug: msg="{{ all_vms }}"
