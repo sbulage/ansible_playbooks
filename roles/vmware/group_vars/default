@@ -1,0 +1,26 @@
+---
+vmware_hostname: "{{ VMWARE_HOST | default("192.168.1.1") }}"
+vmware_username: "{{ VMWARE_USER | default("root") }}" 
+vmware_password: "{{ VMWARE_PASSWORD | default("root") }}"
+
+
+vmware_cluster_hostname: 192.168.1.1
+vmware_cluster_username: administrator@vsphere.local
+vmware_cluster_password: password123
+vmware_cluster_datacenter: Datacenter
+vmware_cluster_folder: 
+vmware_guest_name:
+vmware_guest_state:
+vmware_guest_id:
+vmware_guest_disk_size:
+vmware_guest_disk_type:
+vmware_guest_disk_datastore:
+vmware_guest_hw_memory:
+vmware_guest_hw_cpu:
+vmware_guest_hw_scsi:
+vmware_guest_net_name:
+vmware_guest_net_ip:
+vmware_guest_net_netmask:
+vmware_guest_net_mac:
+vmware_guest_template:
+
