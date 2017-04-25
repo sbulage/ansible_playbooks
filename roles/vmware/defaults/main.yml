@@ -1,7 +1,7 @@
 ---
-vmware_hostname: "{{ lookup('env', 'VMWARE_HOST') | default("192.168.1.1") }}"
-vmware_username: "{{ lookup('env', 'VMWARE_USER') | default("root") }}" 
-vmware_password: "{{ lookup('env', 'VMWARE_PASSWORD') | default("root") }}"
+vmware_hostname: "{{ lookup('env', 'VMWARE_HOST') | default('192.168.1.1') }}"
+vmware_username: "{{ lookup('env', 'VMWARE_USER') | default('root') }}" 
+vmware_password: "{{ lookup('env', 'VMWARE_PASSWORD') | default('root') }}"
 
 
 vmware_cluster_hostname: 192.168.1.1
