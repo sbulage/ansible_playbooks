@@ -1,0 +1,7 @@
+---
+- name: Gather all registered virtual machines
+  local_action:
+    module: vmware_vm_facts
+    hostname: esxi_or_vcenter_ip_or_hostname
+    username: username
+    password: password

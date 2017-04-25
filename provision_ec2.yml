@@ -1,16 +1,6 @@
 ---
 - hosts: localhost
   connection: local
-  tags: prepare_cloud
-  vars:
-    - ansible_ssh_user: default
-  roles:
-    - { role: dump_all_variables, tags: ['dump_vars'] }
-    - { role: prepare_cloud, tags: ['prepare_cloud'] }
-
-# Include variables about our environment
-- hosts: localhost
-  connection: local
   pre_tasks:
     # Include variables about our environment
     - name: Include the variables specific to the environment
@@ -20,6 +10,7 @@
     - ansible_ssh_user: default
   roles:
     - { role: dump_all_variables, tags: ['dump_vars'] }
+    - { role: prepare_cloud, tags: ['prepare_cloud'] }
     - { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
     - { role: provision-ec2, tags: ['ec2'] }
 
