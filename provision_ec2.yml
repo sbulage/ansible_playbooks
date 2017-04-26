@@ -15,4 +15,14 @@
     - { role: provision-ec2, tags: ['ec2'] }
 
 
+- hosts: localhost
+  connection: local
+  pre_tasks:
+    # Include variables about our environment
+    - name: Include the variables specific to the environment
+      include_vars: envs/{{ environ }}.yml
+  tags: provider
+  roles:
+    - { role: dump_all_variables, tags: ['dump_vars'] }
+    - { role: manageiq_register, tags: ['manageiq'] }
 

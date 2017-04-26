@@ -1,0 +1,14 @@
+---
+- name: Get token from ManageIQ
+  uri:
+    url: "{{ manageiq_provider_auth }}"
+    method: GET
+    body:
+    user: "{{ manageiq_user }}"
+    password: "{{ manageiq_pass }}"
+    body_format: json
+    validate_certs: False
+    headers:
+      Content-Type: "application/json" 
+    status_code: 200
+  register: manageiq_token

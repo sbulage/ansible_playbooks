@@ -27,26 +27,30 @@
 - debug: var=item.tagged_instances[0].public_ip
   with_items: "{{ ec2_inst.results }}"
 
-- debug: var=item.invocation.module_complex_args.instance_tags['Name']
+#- debug: var=item.invocation.module_complex_args.instance_tags['Name']
+- debug: var=item.invocation.module_args.instance_tags['Name']
   with_items: "{{ ec2_inst.results }}"
 
-- debug: var=item.invocation.module_complex_args.instance_tags['env']
+#- debug: var=item.invocation.module_complex_args.instance_tags['env']
+- debug: var=item.invocation.module_args.instance_tags['env']
   with_items: "{{ ec2_inst.results }}"
   
-- name: debug complex args
-  debug: var="{{ ec2_inst.results[0].invocation.module_complex_args.instance_tags }}"
+#- name: debug complex args
+#  debug: var="{{ ec2_inst.results[0].invocation.module_args.instance_tags }}"
+#  with_items: "{{ ec2_inst.results }}"
  
 - name: Set facts/variables for add_host task
   set_fact:
-    tag_Name: "{{ ec2_inst.results[0].invocation.module_complex_args.instance_tags['Name'] }}"
-    tag_env: "{{ ec2_inst.results[0].invocation.module_complex_args.instance_tags['env'] }}"
-    tag_project: "{{ ec2_inst.results[0].invocation.module_complex_args.instance_tags['project'] }}"
-    tag_role: "{{ ec2_inst.results[0].invocation.module_complex_args.instance_tags['role'] }}"
+    tag_Name: "{{ item.invocation.module_args.instance_tags['Name'] }}"
+    tag_env: "{{ item.invocation.module_args.instance_tags['env'] }}"
+    tag_project: "{{ item.invocation.module_args.instance_tags['project'] }}"
+    tag_role: "{{ item.invocation.module_args.instance_tags['role'] }}"
   when: ec2_inst.changed
+  with_items: "{{ ec2_inst.results }}"
 
 - name: Add new instances with public IPs to host group
   add_host: name={{ item.public_ip }} >
-            groups=tag_Name_{{ tag_Name }},tag_env_{{ tag_env }},tag_project_{{ tag_project }},tag_role_{{ tag_role }}
+            groups=tag_Name_{{ tag_Name }},tag_env_{{ tag_env }},tag_project_{{ tag_project }},tag_role_{{ tag_role }},new_ec2_instances
             ec2_region={{ ec2_region }}
             ec2_tag_Name=tag_Name_{{ tag_Name }}
             ec2_tag_env=tag_env_{{ tag_env }} 
@@ -71,14 +75,14 @@
 - name: show add_hosts output
   debug: var=add_hosts
 
-- name: Wait until SSH on public instances is available
-  local_action:
-    module: wait_for
-    #host: "{{ item.tagged_instances[0].public_ip }}"
-    host: "{{ item.public_ip }}"
-    port: 22
-  when: ec2_inst.changed and item.public_ip is defined
-  with_items: "{{ ec2_inst.results[0].instances }}"
+##- name: Wait until SSH on public instances is available
+#  local_action:
+#    module: wait_for
+#    #host: "{{ item.tagged_instances[0].public_ip }}"
+#    host: "{{ item.public_ip }}"
+#    port: 22
+#  when: ec2_inst.changed and item.public_ip is defined and item.tagged_instances[0].tags['role'] != "nat"
+#  with_items: "{{ ec2_inst.results[0].instances }}"
      
   #OK - search for instance IDs which belongs to public security group
    #- name: debug variables from ec2 creation
@@ -95,14 +99,14 @@
 #     when: ec2_inst.changed 
 #     with_items: ec2_inst.results[0].instances
 
-- name: Wait until SSH on private instance is available
-  local_action:
-    module: wait_for
-    #host: "{{ item.tagged_instances[0].private_ip }}"
-    host: "{{ item.private_ip }}"
-    port: 22
-  when: ec2_inst.changed and item.private_ip is defined
-  with_items: "{{ ec2_inst.results[0].instances }}"
+#- name: Wait until SSH on private instance is available
+#  local_action:
+#    module: wait_for
+#    #host: "{{ item.tagged_instances[0].private_ip }}"
+#    host: "{{ item.private_ip }}"
+#    port: 22
+#  when: ec2_inst.changed and item.private_ip is defined
+#  with_items: "{{ ec2_inst.results[0].instances }}"
 
 #   - name: Set fact - management server
 #     set_fact: management_server_ip={{ item.tagged_instances[0].public_ip }}
@@ -114,7 +118,7 @@
 #   - debug: var=item
 #     with_items: ec2_inst.results
 
-- name: Set facts - deployed ec2 instances
-  set_fact: 
-    ec2_deployed_instances: "{{ ec2_inst.results[0].instances }}"
-  when: ec2_inst.changed
+#- name: Set facts - deployed ec2 instances
+#  set_fact: 
+#    ec2_deployed_instances: "{{ ec2_inst.results[0].instances }}"
+#  when: ec2_inst.changed

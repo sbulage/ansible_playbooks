@@ -1,0 +1,14 @@
+---
+manageiq_machine: "{{ | default('localhost') }}"
+manageiq: "https://{{ manageiq_machine }}"
+manageiq_user: "{{ | default('admin') }}"
+manageiq_pass: "{{ | default('smartvm') }}"
+manageiq_provider_auth: "{{ manageiq }}/api/auth"
+manageiq_provider_url: "{{ manageiq }}/api/providers"
+ec2_provider_name: "ec2_provider_{{ ec2_region }}"
+ec2_provider_type: "ManageIQ::Providers::Amazon::CloudManager"
+ec2_provider_credentials:
+  userid: "{{ lookup('env', 'AWS_ACCESS_KEY') }}" 
+  password: "{{ lookup('env', 'AWS_SECRET_KEY') }}" 
+ec2_provider_zone: "{{ ec2_region }}"
+
