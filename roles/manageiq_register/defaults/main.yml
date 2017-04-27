@@ -23,6 +23,7 @@ ec2_provider_zone:
 # Wait for provider refresh
 retry_interval: 10
 max_retries: 18
+wait_seconds_before_refresh: 10
 
 
 vm: "vms/1000000000029"

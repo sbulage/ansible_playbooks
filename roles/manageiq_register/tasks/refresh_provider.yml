@@ -1,7 +1,7 @@
 - set_fact: prov_id="{{ provider_info.json.results[0].id }}"
 
 - name: Wait few seconds after adding provider, otherwise you can get response "Providers failed last authentication check"
-  pause: seconds=5
+  pause: seconds="{{ wait_seconds_before_refresh }}"
 
 - name: Refresh Amazon EC2 provider in CloudForms
   uri:
