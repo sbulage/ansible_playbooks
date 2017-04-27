@@ -4,9 +4,10 @@
 manageiq_machine: "{{ manageiq_mach | default('localhost') }}"
 manageiq: "https://{{ manageiq_machine }}"
 manageiq_api: "{{ manageiq }}/api"
+manageiq_api_url: "{{ manageiq.api_url + '/api' | default(manageiq_api) }}"
 manageiq_user: "{{ manageiq_u | default('admin') }}"
 manageiq_pass: "{{ manageiq_p | default('smartvm') }}"
-manageiq_api_url: "{{ manageiq.api_url | default(manageiq_api) }}"
+
 manageiq_provider_auth: "{{ manageiq_api_url }}/auth"
 manageiq_provider_url: "{{ manageiq_api_url }}/providers"
 manageiq_provider_zone: "{{ manageiq_api_url }}/zone/1"
