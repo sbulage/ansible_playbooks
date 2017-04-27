@@ -1,6 +1,11 @@
 ---
 - include: get_token.yml
+
 - include: add_ec2_provider.yml
+
 - include: refresh_provider.yml
+
 - include: add_vm_to_service.yml
+  when: manageiq.service is defined
+
 - include: tag_vm.yml

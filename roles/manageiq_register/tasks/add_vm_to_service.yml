@@ -6,6 +6,9 @@
 #    - debug: var=manageiq.service
 #    - debug: var=manageiq.event_target
 
+- name: debug all
+  debug: msg="{{ manageiq }}"
+
 - name: debug service
   debug: msg="{{ manageiq.service }}"
 - name: debug api_url
