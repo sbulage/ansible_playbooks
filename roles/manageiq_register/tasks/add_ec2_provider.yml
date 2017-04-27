@@ -1,6 +1,6 @@
 - name: Add Amazon EC2 provider into CloudForms
   uri:
-    url: "{{provider_url }}"
+    url: "{{ manageiq_provider_url }}"
     method: POST
     body:
       name: "{{ ec2_provider_name }}"
@@ -8,12 +8,15 @@
       credentials: "{{ ec2_provider_credentials }}"
       zone: "{{ ec2_provider_zone }}"
       action: create
+      provider_region: "{{ ec2_region }}"
     body_format: json
     validate_certs: False
     headers:
-      X-Auth-Token: "{{ manageiq_token.api_token }}"
+      X-Auth-Token: "{{ auth_token }}"
       Content-Type: "application/json" 
     status_code: 200
-  register: output
+  register: provider_info
 
+- debug: msg="{{ provider_info }}"
+# - set_fact: prov_id="{{ provider_info.json.results[0].id }}"
 

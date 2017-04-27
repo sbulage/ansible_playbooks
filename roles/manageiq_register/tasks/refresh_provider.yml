@@ -1,20 +1,23 @@
-- name: Set the Provider URL
-  set_fact:
-    provider_url: "{{ manageiq.api_url }}/api/providers/{{ provider_id }}"
+- set_fact: prov_id="{{ provider_info.json.results[0].id }}"
+
+- name: Wait few seconds after adding provider, otherwise you can get response "Providers failed last authentication check"
+  pause: seconds=5
 
 - name: Refresh Amazon EC2 provider in CloudForms
   uri:
-    url: "{{ provider_url }}"
+    url: "{{ manageiq_provider_url }}/{{ prov_id }}"
     method: POST
     body:
       action: refresh
     body_format: json
     validate_certs: False
     headers:
-      X-Auth-Token: "{{ manageiq.api_token }}"
+      X-Auth-Token: "{{ auth_token }}"
       Content-Type: "application/json" 
     status_code: 200
   register: output
+
+- debug: msg="{{ output }}"
 
 - name: set the task href
   set_fact:
@@ -26,7 +29,7 @@
     method: GET
     validate_certs: False
     headers:
-      X-Auth-Token: "{{ manageiq.api_token }}"
+      X-Auth-Token: "{{ auth_token }}"
       Content-Type: "application/json" 
     status_code: 200
   register: task_result

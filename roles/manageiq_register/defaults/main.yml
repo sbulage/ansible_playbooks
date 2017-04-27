@@ -1,14 +1,34 @@
 ---
-manageiq_machine: "{{ | default('localhost') }}"
+
+# Defaults
+manageiq_machine: "{{ manageiq_mach | default('localhost') }}"
 manageiq: "https://{{ manageiq_machine }}"
-manageiq_user: "{{ | default('admin') }}"
-manageiq_pass: "{{ | default('smartvm') }}"
-manageiq_provider_auth: "{{ manageiq }}/api/auth"
-manageiq_provider_url: "{{ manageiq }}/api/providers"
+manageiq_api: "{{ manageiq }}/api"
+manageiq_user: "{{ manageiq_u | default('admin') }}"
+manageiq_pass: "{{ manageiq_p | default('smartvm') }}"
+manageiq_api_url: "{{ manageiq.api_url | default(manageiq_api) }}"
+manageiq_provider_auth: "{{ manageiq_api_url }}/auth"
+manageiq_provider_url: "{{ manageiq_api_url }}/providers"
+manageiq_provider_zone: "{{ manageiq_api_url }}/zone/1"
+manageiq_services_url: "{{ manageiq_api_url }}/services"
+# AWS specific
 ec2_provider_name: "ec2_provider_{{ ec2_region }}"
 ec2_provider_type: "ManageIQ::Providers::Amazon::CloudManager"
 ec2_provider_credentials:
   userid: "{{ lookup('env', 'AWS_ACCESS_KEY') }}" 
   password: "{{ lookup('env', 'AWS_SECRET_KEY') }}" 
-ec2_provider_zone: "{{ ec2_region }}"
+ec2_provider_zone:
+  href: "{{ manageiq_provider_zone }}"
+# Wait for provider refresh
+retry_interval: 10
+max_retries: 18
+
+
+# Vars exposed by CFME to Tower
+#add service
+#manageiq.api_url
+#manageiq.api_token
+
+#manageiq.service
+#manageiq.event_target
 

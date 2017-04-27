@@ -10,7 +10,7 @@
     - ansible_ssh_user: default
   roles:
     - { role: dump_all_variables, tags: ['dump_vars'] }
-    - { role: prepare_cloud, tags: ['prepare_cloud'] }
-    - { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
-    - { role: provision-ec2, tags: ['ec2'] }
+    #- { role: prepare_cloud, tags: ['prepare_cloud'] }
+    #- { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
+    #- { role: provision-ec2, tags: ['ec2'] }
     - { role: manageiq_register, tags: ['manageiq'] }

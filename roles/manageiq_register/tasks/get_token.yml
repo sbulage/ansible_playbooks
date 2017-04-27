@@ -12,3 +12,6 @@
       Content-Type: "application/json" 
     status_code: 200
   register: manageiq_token
+  when: manageiq.api_token is undefined
+
+- set_fact: auth_token="{{ manageiq.api_token | default(manageiq_token.json.auth_token) }}"
