@@ -11,6 +11,19 @@
   roles:
     - { role: prepare_cloud, tags: ['prepare_cloud'] }
     - { role: dump_all_variables, tags: ['dump_vars'] }
+    - { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
+    - { role: provision-ec2, tags: ['ec2'] }
+    - { role: manageiq_register, tags: ['manageiq'] }
+
+- hosts: new_ec2_instances
+  connection: local
+  pre_tasks:
+    # Include variables about our environment
+    - name: Include the variables specific to the environment
+      include_vars: envs/{{ environ }}.yml
+  roles:
+    #- { role: prepare_cloud, tags: ['prepare_cloud'] }
+    #- { role: dump_all_variables, tags: ['dump_vars'] }
     #- { role: provision-vpc, tags: ['vpc', 'subnet', 'sg', 'peer-links'] }
     #- { role: provision-ec2, tags: ['ec2'] }
-    - { role: manageiq_register, tags: ['manageiq'] }
+    #- { role: manageiq_register, tags: ['manageiq'] }

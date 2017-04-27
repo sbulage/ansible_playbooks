@@ -69,11 +69,11 @@
             ec2_tag_project=tag_project_{{ tag_project }}
             ec2_tag_role=tag_role_{{ tag_role }}
   with_items: "{{ ec2_inst.results[0].instances }}"
-  register: add_hosts
+  register: virtual_inventory
   when: ec2_inst.changed and "{{ tag_Name }}" != "management_server"
 
 - name: show add_hosts output
-  debug: var=add_hosts
+  debug: var=virtual_inventory
 
 ##- name: Wait until SSH on public instances is available
 #  local_action:

@@ -15,8 +15,20 @@
   debug: msg="{{ manageiq.api_url }}"
 - name: debug token
   debug: msg="{{ manageiq.api_token }}"
-- name: debug event target
-  debug: msg="{{ manageiq.event_target }}"
+#- name: debug event target
+#  debug: msg="{{ manageiq.event_target }}"
+
+- name: 1
+  debug: item
+  with_items: "{{ virtual_inventory.results }}"
+
+- name: 2
+  debug: item.item.id
+  with_items: "{{ virtual_inventory.results }}"
+
+
+#https://10.8.196.164//api/vms?expand=resources&attributes=name,ems_id,ems_ref&filter[]=ems_ref='i-0c33c5435e9e1e81f'
+
 
 - name: Set the Service URL
   set_fact:
