@@ -18,11 +18,11 @@
 #- name: debug event target
 #  debug: msg="{{ manageiq.event_target }}"
 
-- name: 1
+- name: DEBUG 1ST
   debug: item
   with_items: "{{ virtual_inventory.results }}"
 
-- name: 2
+- name: Debug 2nd
   debug: item.item.id
   with_items: "{{ virtual_inventory.results }}"
 
