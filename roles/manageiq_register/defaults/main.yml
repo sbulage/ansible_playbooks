@@ -24,6 +24,12 @@ retry_interval: 10
 max_retries: 18
 
 
+vm: "vms/1000000000029"
+tags:
+  - { category: "department", name: "qe"}
+  - { category: "lifecycle", name: "retire_full"}
+
+
 # Vars exposed by CFME to Tower
 #add service
 #manageiq.api_url
