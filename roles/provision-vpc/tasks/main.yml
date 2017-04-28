@@ -100,6 +100,9 @@
   when: vpc_internet_gateway and item['resource_tags']['tier'] is defined and item['resource_tags']['tier'] == 'public' and
         environ != "management"
 
+- name: deployed nat instances
+  debug: msg="{{ ec2 }}" 
+
 - debug: var=aws_creds
  
 - name: Get the routing table entry for the main table.

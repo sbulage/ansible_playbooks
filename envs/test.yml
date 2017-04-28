@@ -2,7 +2,7 @@
 # Override these variables if needed
 
 # Name of the environment, all resources will be prepended with this string!
-environ: test
+environ: "test"
 # Region where to deploy all resources
 ec2_region: "eu-central-1"
 
@@ -142,7 +142,7 @@ vpc_instances:
         env: "{{ environ }}"
         project: "{{ project }}"
         role: web
-    exact_count: 1
+    exact_count: 2
     count_tag: 
         Name: "{{ environ }}_web_server"
     subnet: "{{ environ }}-eu-central-1a-priv1"

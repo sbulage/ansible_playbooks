@@ -6,40 +6,68 @@
 #    - debug: var=manageiq.service
 #    - debug: var=manageiq.event_target
 
-- name: debug all
-  debug: msg="{{ manageiq }}"
-
-- name: debug service
-  debug: msg="{{ manageiq.service }}"
-- name: debug api_url
-  debug: msg="{{ manageiq.api_url }}"
-- name: debug token
-  debug: msg="{{ manageiq.api_token }}"
-#- name: debug event target
-#  debug: msg="{{ manageiq.event_target }}"
+#- name: debug all
+#  debug: msg="{{ manageiq }}"
+#
+#- name: debug service
+#  debug: msg="{{ manageiq.service }}"
+#- name: debug api_url
+#  debug: msg="{{ manageiq.api_url }}"
+#- name: debug token
+#  debug: msg="{{ manageiq.api_token }}"
+##- name: debug event target
+##  debug: msg="{{ manageiq.event_target }}"
 
 - name: DEBUG 1ST
-  debug: item
-  with_items: "{{ virtual_inventory.results }}"
+  debug: msg=item.id
+  with_items: "{{ ec2_deployed_instances }}"
 
-- name: Debug 2nd
-  debug: item.item.id
-  with_items: "{{ virtual_inventory.results }}"
+- name: Loop over instances
+  uri:
+    url: "{{ manageiq_vms_url }}?expand=resources&attributes=name,id,ems_ref&filter[]=ems_ref={{ item.id }}"
+    method: GET
+    body_format: json
+    validate_certs: False
+    headers:
+      X-Auth-Token: "{{ auth_token }}"
+      Content-Type: "application/json" 
+    status_code: 200
+  with_items: "{{ ec2_deployed_instances }}"
+  register: get_vms_ids
 
+- name: debug vm ids
+  debug: msg="{{ item }}"
+  with_items: "{{ get_vms_ids.json.resources }}"
+  ignore_errors: True
+ 
 
-#https://10.8.196.164//api/vms?expand=resources&attributes=name,ems_id,ems_ref&filter[]=ems_ref='i-0c33c5435e9e1e81f'
+- name: debug vm ids
+  debug: msg="{{ item }}"
+  with_items: "{{ get_vms_ids.json.resources[0] }}"
+  ignore_errors: True
+
+- name: debug vm ids
+  debug: msg="{{ item }}"
+  with_items: "{{ get_vms_ids.results.json.resources[0] }}"
+  ignore_errors: True
+
+- name: debug vm ids
+  debug: msg="{{ item }}"
+  with_items: "{{ get_vms_ids.results.json.resources }}"
+  ignore_errors: True
 
 
 - name: Set the Service URL
   set_fact:
-    svc_url: "/api/{{ manageiq.service }}"
+    svc_url: "/api/services/10"
+    #svc_url: "/api/{{ manageiq.service }}"
     #svc_url: "{{ manageiq_services_url }}"
 
-- name: Set the VM URL
-  set_fact:
-    vm_url: "/api/{{ manageiq.event_target }}"
+#- name: Set the VM URL
+#  set_fact:
+#    vm_url: "/api/{{ manageiq.event_target }}"
 
-- debug: var=svc_url
+#- debug: var=svc_url
 
 - name: Create an array of vms
   set_fact:

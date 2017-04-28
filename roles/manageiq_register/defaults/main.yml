@@ -3,15 +3,16 @@
 # Defaults
 manageiq_machine: "{{ manageiq_mach | default('localhost') }}"
 manageiq: "https://{{ manageiq_machine }}"
-manageiq_api: "{{ manageiq }}/api"
-manageiq_api_url: "{{ manageiq.api_url + '/api' | default(manageiq_api) }}"
+#manageiq_api: "{{ manageiq }}/api"
+manageiq_api_url: "{{ manageiq.api_url | default(manageiq) }}"
 manageiq_user: "{{ manageiq_u | default('admin') }}"
 manageiq_pass: "{{ manageiq_p | default('smartvm') }}"
 
-manageiq_provider_auth: "{{ manageiq_api_url }}/auth"
-manageiq_provider_url: "{{ manageiq_api_url }}/providers"
-manageiq_provider_zone: "{{ manageiq_api_url }}/zone/1"
-manageiq_services_url: "{{ manageiq_api_url }}/services"
+manageiq_provider_auth: "{{ manageiq_api_url }}/api/auth"
+manageiq_provider_url: "{{ manageiq_api_url }}/api/providers"
+manageiq_provider_zone: "{{ manageiq_api_url }}/api/zone/1"
+manageiq_services_url: "{{ manageiq_api_url }}/api/services"
+manageiq_vms_url: "{{ manageiq_api_url }}/api/vms"
 # AWS specific
 ec2_provider_name: "ec2_provider_{{ ec2_region }}"
 ec2_provider_type: "ManageIQ::Providers::Amazon::CloudManager"

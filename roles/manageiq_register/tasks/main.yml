@@ -6,6 +6,6 @@
 - include: refresh_provider.yml
 
 - include: add_vm_to_service.yml
-  when: manageiq.service is defined
+  when: ec2_deployed_instances is defined
 
 - include: tag_vm.yml
