@@ -56,6 +56,11 @@
   with_items: "{{ get_vms_ids.results.json.resources }}"
   ignore_errors: True
 
+- name: debug vm ids 
+  debug: msg="{{ item.id }}"
+  with_items: "{{ get_vms_ids }}"
+  ignore_errors: True
+
 
 - name: Set the Service URL
   set_fact:
