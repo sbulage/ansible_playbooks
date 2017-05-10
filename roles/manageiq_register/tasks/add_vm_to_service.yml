@@ -39,21 +39,15 @@
   debug: msg="{{ get_vms_ids }}"
   ignore_errors: True
 
+- name: debug vm ids 1.1
+  debug: msg="{{ get_vms_ids.results.json.resources }}"
+  ignore_errors: True
+
 - name: debug vm ids
   debug: msg="{{ item }}"
   with_items: "{{ get_vms_ids.json.resources }}"
   ignore_errors: True
  
-
-- name: debug vm ids
-  debug: msg="{{ item }}"
-  with_items: "{{ get_vms_ids.json.resources[0] }}"
-  ignore_errors: True
-
-- name: debug vm ids
-  debug: msg="{{ item }}"
-  with_items: "{{ get_vms_ids.results.json.resources[0] }}"
-  ignore_errors: True
 
 - name: debug vm ids
   debug: msg="{{ item }}"
