@@ -1,11 +1,15 @@
 ---
 - include: get_token.yml
+  when: ec2_deployed_instances is defined
 
 - include: add_ec2_provider.yml
+  when: ec2_deployed_instances is defined
 
 - include: refresh_provider.yml
+  when: ec2_deployed_instances is defined
 
 - include: add_vm_to_service.yml
   when: ec2_deployed_instances is defined
 
 - include: tag_vm.yml
+  when: ec2_deployed_instances is defined
