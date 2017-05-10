@@ -35,6 +35,10 @@
   with_items: "{{ ec2_deployed_instances }}"
   register: get_vms_ids
 
+- name: debug vm ids 1
+  debug: msg="{{ get_vms_ids }}"
+  ignore_errors: True
+
 - name: debug vm ids
   debug: msg="{{ item }}"
   with_items: "{{ get_vms_ids.json.resources }}"
