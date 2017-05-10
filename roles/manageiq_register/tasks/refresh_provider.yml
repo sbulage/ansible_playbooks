@@ -1,7 +1,7 @@
 #- set_fact: prov_id="{{ provider_info.json.results[0].id }}"
 
 - set_fact: prov_id="{{ get_prov_id.json.resources[0]['id'] }}"
-  when: "'Name has already been taken' in provider_info.json.error.message"
+  when: provider_info.status != '200' and "'Name has already been taken' in provider_info.json.error.message"
 
 #- debug: msg="{{ provider_info }}"
 - set_fact: prov_id="{{ provider_info.json.results[0].id }}"
