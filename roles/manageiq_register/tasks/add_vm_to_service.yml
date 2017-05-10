@@ -56,9 +56,9 @@
   with_items: "{{ get_vms_ids.results.json.resources }}"
   ignore_errors: True
 
-- name: debug vm ids 
+- name: debug vm ids 2
   debug: msg="{{ item }}"
-  with_items: "{{ get_vms_ids }}"
+  with_items: "{{ get_vms_ids.item }}"
   ignore_errors: True
 
 
