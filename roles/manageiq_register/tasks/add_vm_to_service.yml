@@ -19,7 +19,7 @@
 ##  debug: msg="{{ manageiq.event_target }}"
 
 - name: DEBUG 1ST
-  debug: msg=item.id
+  debug: msg="{{ item.id }}"
   with_items: "{{ ec2_deployed_instances }}"
 
 - name: Loop over instances
