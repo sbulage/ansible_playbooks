@@ -9,7 +9,7 @@
 - name: Adding provider failed - provider exists?
   set_fact: prov_id="{{ get_prov_id.json.resources[0]['id'] }}"
   register: failed_add_prov
-  when: failed_add_prov == 'yes' and "'Name has already been taken' in provider_info.json.error.message"
+  when: failed_add_prov is defined and "'Name has already been taken' in provider_info.json.error.message"
 
 #- debug: msg="{{ provider_info }}"
 - name: Adding provider suceeded
