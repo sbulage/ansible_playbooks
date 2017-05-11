@@ -48,6 +48,26 @@
   with_items: "{{ get_vms_ids.results }}"
   ignore_errors: True
 
+- name: debug vm ids 1.13
+  debug: msg="{{ item.json.resources.item }}"
+  with_items: "{{ get_vms_ids.results }}"
+  ignore_errors: True
+
+- name: debug vm ids 1.14
+  debug: msg="{{ item.json.resources.item.json }}"
+  with_items: "{{ get_vms_ids.results }}"
+  ignore_errors: True
+
+- name: debug vm ids 1.15
+  debug: msg="{{ item.json.resources.item.json.resources }}"
+  with_items: "{{ get_vms_ids.results }}"
+  ignore_errors: True
+
+- name: debug vm ids 1.16
+  debug: msg="{{ item.json.resources.item.json.resources.href }}"
+  with_items: "{{ get_vms_ids.results }}"
+  ignore_errors: True
+
 - name: debug vm ids 1.2
   debug: msg="{{ get_vms_ids.results[0].json }}"
   ignore_errors: True
