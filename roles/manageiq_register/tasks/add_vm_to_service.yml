@@ -46,22 +46,27 @@
     #svc_url: "/api/{{ manageiq.service }}"
     #svc_url: "{{ manageiq_services_url }}"
 
-- name: Set the VM URL
-  set_fact:
-    #vm_url: "/api/{{ manageiq.event_target }}"
-    vm_url: "{{ item.json.resources[0].href }}"
-  with_items: "{{ get_vms_ids.results }}"
+#- name: Set the VM URL
+#  set_fact:
+#    #vm_url: "/api/{{ manageiq.event_target }}"
+#    vm_url: "{{ item.json.resources[0].href }}"
+#  with_items: "{{ get_vms_ids.results }}"
 
 - name: debug vms urls
   debug: msg="{{ vm_url }}"
 
 #- debug: var=svc_url
 
+#- name: Create an array of vms
+#  set_fact:
+#    vms: "{{ vms|default([]) + [ { 'href': svc_url, 'resource':  { 'href': item } } ] }}"
+#  with_items:
+#    - "{{ vm_url }}"
+
 - name: Create an array of vms
   set_fact:
-    vms: "{{ vms|default([]) + [ { 'href': svc_url, 'resource':  { 'href': item } } ] }}"
-  with_items:
-    - "{{ vm_url }}"
+    vms: "{{ vms|default([]) + [ { 'href': svc_url, 'resource':  { 'href': item.json.resources[0].href } } ] }}"
+  with_items: "{{ get_vms_ids.results }}"
 
 - debug: var=vms
 
