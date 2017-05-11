@@ -49,7 +49,7 @@
   ignore_errors: True
 
 - name: debug vm ids 1.13
-  debug: msg="{{ item.json.resources.item }}"
+  debug: msg="{{ item.json.resources.msg }}"
   with_items: "{{ get_vms_ids.results }}"
   ignore_errors: True
 
