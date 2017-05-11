@@ -35,73 +35,25 @@
   with_items: "{{ ec2_deployed_instances }}"
   register: get_vms_ids
 
-- name: debug vm ids 1
-  debug: msg="{{ get_vms_ids }}"
-  ignore_errors: True
-
-- name: debug vm ids 1.1
-  debug: msg="{{ get_vms_ids.results }}"
-  ignore_errors: True
-
-- name: debug vm ids 1.12
-  debug: msg="{{ item.json.resources }}"
-  with_items: "{{ get_vms_ids.results }}"
-  ignore_errors: True
-
 - name: debug vm ids 1.13
   debug: msg="{{ item.json.resources[0].href }}"
   with_items: "{{ get_vms_ids.results }}"
   ignore_errors: True
 
-- name: debug vm ids 1.14
-  debug: msg="{{ item.json.resources.item.json }}"
-  with_items: "{{ get_vms_ids.results }}"
-  ignore_errors: True
-
-- name: debug vm ids 1.15
-  debug: msg="{{ item.json.resources.item.json.resources }}"
-  with_items: "{{ get_vms_ids.results }}"
-  ignore_errors: True
-
-- name: debug vm ids 1.16
-  debug: msg="{{ item.json.resources.item.json.resources.href }}"
-  with_items: "{{ get_vms_ids.results }}"
-  ignore_errors: True
-
-- name: debug vm ids 1.2
-  debug: msg="{{ get_vms_ids.results[0].json }}"
-  ignore_errors: True
-
-- name: debug vm ids 1.3
-  debug: msg="{{ get_vms_ids.results[0].json.resources }}"
-  ignore_errors: True
-
-- name: debug vm ids
-  debug: msg="{{ item }}"
-  with_items: "{{ get_vms_ids.json.resources }}"
-  ignore_errors: True
- 
-
-- name: debug vm ids
-  debug: msg="{{ item }}"
-  with_items: "{{ get_vms_ids.results.json.resources }}"
-  ignore_errors: True
-
-- name: debug vm ids 2
-  debug: msg="{{ item }}"
-  with_items: "{{ get_vms_ids }}"
-  ignore_errors: True
-
-
 - name: Set the Service URL
   set_fact:
-    svc_url: "/api/services/10"
+    svc_url: "/api/services/26"
     #svc_url: "/api/{{ manageiq.service }}"
     #svc_url: "{{ manageiq_services_url }}"
 
-#- name: Set the VM URL
-#  set_fact:
-#    vm_url: "/api/{{ manageiq.event_target }}"
+- name: Set the VM URL
+  set_fact:
+    #vm_url: "/api/{{ manageiq.event_target }}"
+    vm_url: "{{ item.json.resources[0].href }}"
+  with_items: "{{ get_vms_ids.results }}"
+
+- name: debug vms urls
+  debug: msg="{{ vm_url }}"
 
 #- debug: var=svc_url
 
