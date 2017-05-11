@@ -52,8 +52,8 @@
 #    vm_url: "{{ item.json.resources[0].href }}"
 #  with_items: "{{ get_vms_ids.results }}"
 
-- name: debug vms urls
-  debug: msg="{{ vm_url }}"
+#- name: debug vms urls
+#  debug: msg="{{ vm_url }}"
 
 #- debug: var=svc_url
 
