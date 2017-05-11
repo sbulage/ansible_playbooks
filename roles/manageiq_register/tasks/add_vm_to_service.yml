@@ -44,7 +44,7 @@
   ignore_errors: True
 
 - name: debug vm ids 1.12
-  debug: msg="{{ item.json.resources.href }}"
+  debug: msg="{{ item.json.resources }}"
   with_items: "{{ get_vms_ids.results }}"
   ignore_errors: True
 
