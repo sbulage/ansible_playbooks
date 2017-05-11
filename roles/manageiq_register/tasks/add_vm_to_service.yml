@@ -73,7 +73,7 @@
 - name: Register vms with the service
   uri:
     # url: "{{ manageiq.api_url }}/api/services"
-    url: "{{ manageiq_api_url }}"
+    url: "{{ manageiq_api_url }}/api/services"
     method: POST
     body_format: json
     body:
