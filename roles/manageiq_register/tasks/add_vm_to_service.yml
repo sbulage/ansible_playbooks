@@ -42,8 +42,8 @@
 
 - name: Set the Service URL
   set_fact:
-    svc_url: "/api/services/26"
-    #svc_url: "/api/{{ manageiq.service }}"
+    #svc_url: "/api/services/26"
+    svc_url: "/api/{{ manageiq.service }}"
     #svc_url: "{{ manageiq_services_url }}"
 
 #- name: Set the VM URL
