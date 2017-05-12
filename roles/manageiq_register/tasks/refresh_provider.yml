@@ -5,7 +5,10 @@
 #  set_fact: failed_add_prov = 'yes'
 #  when: provider_info.status != '200'
 #  #when: provider_info.status != '200' and "'Name has already been taken' in provider_info.json.error.message"
-#
+
+- name: debug my vars
+  debug: msg="{{ get_prov_id }}"
+
 - name: Adding provider failed - provider exists?
   set_fact: prov_id="{{ get_prov_id.json.resources[0]['id'] }}"
   when: get_prov_id is defined 
