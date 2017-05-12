@@ -11,7 +11,7 @@
 
 - name: Adding provider failed - provider exists?
   set_fact: prov_id="{{ get_prov_id.json.resources[0]['id'] }}"
-  when: get_prov_id is defined 
+  when: get_prov_id.skipped is defined
 
 #- debug: msg="{{ provider_info }}"
 - name: Adding provider suceeded
