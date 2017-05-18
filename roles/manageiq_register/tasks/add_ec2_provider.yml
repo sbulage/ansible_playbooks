@@ -1,3 +1,18 @@
+- name: Get ZoneID where provider will be added
+  uri:
+    url: "{{ manageiq_zone_url }}?expand=resources&attributes=name,id,href&filter[]=name={{ deploy_into_zone }}"
+    method: GET
+    body_format: json
+    validate_certs: False
+    headers:
+      X-Auth-Token: "{{ auth_token }}"
+      Content-Type: "application/json" 
+    status_code: 200
+  register: zone_id
+
+- name: debug zone id
+  debug: msg="{{ zone_id }}"
+
 - name: Add Amazon EC2 provider into CloudForms
   uri:
     url: "{{ manageiq_provider_url }}"
@@ -6,7 +21,8 @@
       name: "{{ ec2_provider_name }}"
       type: "{{ ec2_provider_type }}"
       credentials: "{{ ec2_provider_credentials }}"
-      zone: "{{ ec2_provider_zone }}"
+      #zone: "{{ ec2_provider_zone }}"
+      zone: "{{ zone_id.json.resources[0]['id'] }}"
       action: create
       provider_region: "{{ ec2_region }}"
     body_format: json
