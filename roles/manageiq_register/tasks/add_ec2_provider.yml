@@ -13,6 +13,18 @@
 - name: debug zone id
   debug: msg="{{ zone_id }}"
 
+- name: debug zone id 2
+  debug: msg="{{ zone_id.json }}"
+
+- name: debug zone id 3
+  debug: msg="{{ zone_id.json.resources }}"
+
+- name: debug zone id 4
+  debug: msg="{{ zone_id.json.resources[0] }}"
+
+- name: debug zone id 5
+  debug: msg="{{ zone_id.json.resources[0]['id'] }}"
+
 - name: Add Amazon EC2 provider into CloudForms
   uri:
     url: "{{ manageiq_provider_url }}"
