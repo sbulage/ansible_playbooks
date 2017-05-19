@@ -25,6 +25,9 @@
 - name: debug zone id 5
   debug: msg="{{ zone_id.json.resources[0]['id'] }}"
 
+- name: debug zone id 6
+  debug: msg="{{ zone_id.json.resources[0]['id'] | int }}"
+
 - name: Add Amazon EC2 provider into CloudForms
   uri:
     url: "{{ manageiq_provider_url }}"
@@ -34,7 +37,7 @@
       type: "{{ ec2_provider_type }}"
       credentials: "{{ ec2_provider_credentials }}"
       #zone: "{{ ec2_provider_zone }}"
-      zone: "{{ zone_id.json.resources[0]['id'] }}"
+      zone: "{{ zone_id.json.resources[0]['id'] | int }}"
       action: create
       provider_region: "{{ ec2_region }}"
     body_format: json
