@@ -11,6 +11,7 @@ manageiq_pass: "{{ manageiq_p | default('smartvm') }}"
 manageiq_provider_auth: "{{ manageiq_api_url }}/api/auth"
 manageiq_provider_url: "{{ manageiq_api_url }}/api/providers"
 manageiq_provider_zone: "{{ manageiq_api_url }}/api/zone/1"
+deploy_into_zone: default
 manageiq_zone_url: "{{ manageiq_api_url }}/api/zones"
 manageiq_services_url: "{{ manageiq_api_url }}/api/services"
 manageiq_vms_url: "{{ manageiq_api_url }}/api/vms"
