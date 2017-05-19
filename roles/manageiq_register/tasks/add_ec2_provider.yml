@@ -37,7 +37,7 @@
       type: "{{ ec2_provider_type }}"
       credentials: "{{ ec2_provider_credentials }}"
       #zone: "{{ ec2_provider_zone }}"
-      zone: "{{ zone_id.json.resources[0]['id'] | int }}"
+      zone: "{{ manageiq_zone_url }}/{{ zone_id.json.resources[0]['id'] }}"
       action: create
       provider_region: "{{ ec2_region }}"
     body_format: json
