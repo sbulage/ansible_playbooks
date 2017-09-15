@@ -1,0 +1,25 @@
+---
+- name: This is long running playbook
+  hosts: all
+  vars:
+  tasks:
+  - name: This is first task
+    debug:
+      msg="First message before sleep"
+
+  - name: Sleep for 3600 seconds and continue with play
+    wait_for: 
+      timeout="{{ item }}"
+    delegate_to: localhost
+    with_items:
+      - 600
+      - 600
+      - 600
+      - 600
+      - 600
+      - 600
+
+  - name: This is third task
+    debug:
+      msg="Last message after sleep"
+
