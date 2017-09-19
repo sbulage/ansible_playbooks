@@ -1,0 +1,23 @@
+---
+- name: call API from Satellite
+  hosts: localhost
+  gather_facts: no
+  vars:
+    # satelliteurl: satellite-server.example.com
+    # client: helium.example.com
+ 
+  roles:
+    - dump_all_variables
+ 
+#  tasks:
+#    - name: get modules for given host from satellite 
+#      uri:
+#        url: https://{{ satelliteurl }}/api/v2/hosts/{{ client }}
+#        method: GET 
+#        user: admin
+#        password: password
+#        force_basic_auth: yes 
+#        validate_certs: no
+#      register: restdata
+#    - name: output rest data
+#      debug: msg="{{ restdata.json.all_puppetclasses | count }}" 
