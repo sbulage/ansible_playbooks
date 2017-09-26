@@ -2,22 +2,24 @@
 - name: This is long running playbook
   hosts: all
   vars:
+    timeout_default: "{{ timeout | default(3600) | int }}"
+    timeout_divide_six: "{{ (timeout_default|int / 6)|int}}"
   tasks:
   - name: This is first task
     debug:
       msg="First message before sleep"
 
-  - name: Sleep for 3600 seconds and continue with play
+  - name: Sleep for "{{ timeout_divide_six }}" seconds and continue with play [sleeping for {{ timeout_default }} in total ]
     wait_for: 
       timeout="{{ item }}"
     delegate_to: localhost
     with_items:
-      - 600
-      - 600
-      - 600
-      - 600
-      - 600
-      - 600
+      - "{{ timeout_divide_six }}"
+      - "{{ timeout_divide_six }}"
+      - "{{ timeout_divide_six }}"
+      - "{{ timeout_divide_six }}"
+      - "{{ timeout_divide_six }}"
+      - "{{ timeout_divide_six }}"
 
   - name: This is third task
     debug:
