@@ -1,0 +1,46 @@
+---
+- name: Get auth token from manageiq and create new user
+  hosts: lokal
+  gather_facts: no
+  vars:
+    manageiq_user: admin
+    manageiq_pass: smartvm
+    manageiq_auth_url: "https://{{ manageiq_host }}/api/auth"
+    manageiq_url: "https://{{ manageiq_host }}"
+  tasks:
+  - name: Check
+    fail:
+      msg: "manageiq_host variable is not set. Set this var to the IP or hostname of ManageIQ appliance."
+    when: manageiq_host is not defined
+  
+  - name: Get token from ManageIQ
+    uri:
+      url: "{{ manageiq_auth_url }}"
+      method: GET
+      body:
+      user: "{{ manageiq_user }}"
+      password: "{{ manageiq_pass }}"
+      body_format: json
+      validate_certs: False
+      headers:
+        Content-Type: "application/json" 
+      status_code: 200
+    register: manageiq_token
+
+  - name: check how the token looks like
+    debug:
+      msg: var="{{ manageiq_token.json.auth_token }}"
+
+  - name: Create a new user in ManageIQ using a token
+    manageiq_user:
+      userid: 'jdoe'
+      name: 'Jane Doe'
+      password: 'VerySecret'
+      group: 'EvmGroup-user'
+      email: 'jdoe@example.com'
+      manageiq_connection:
+        url: "{{ manageiq_url }}"
+        token: "{{ manageiq_token.json.auth_token }}"
+        verify_ssl: False
+        # username: admin
+        # password: smartvm
