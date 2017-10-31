@@ -8,7 +8,10 @@
 - include: refresh_provider.yml
   when: ec2_deployed_instances is defined
 
-- include: add_vm_to_service.yml
+# - include: add_vm_to_service.yml
+#   when: ec2_deployed_instances is defined
+
+- include: add_vm_to_service_5903.yml
   when: ec2_deployed_instances is defined
 
 #- include: tag_vm.yml
