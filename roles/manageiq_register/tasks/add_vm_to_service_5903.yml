@@ -63,27 +63,31 @@
 #  with_items:
 #    - "{{ vm_url }}"
 
-- name: debug vms ems ids
-  debug: msg="{{ item.json resources[0] }}"
-  with_items: "{{ get_vms_ids.results }}"
-
 - name: Create an array of vms
   set_fact:
     # vms: "{{ vms|default([]) + [ { 'href': svc_url, 'resource':  { 'href': item.json.resources[0].href } } ] }}"
-    vms: "{{ vms|default([]) + [ { 'href': svc_url, 'resource':  { 'href': item.json.resources[0].href } } ] }}"
+    vms: "{{ vms|default([]) + [ 'uid_ems': item.json.resources[0].ems_ref } } ] }}"
   with_items: "{{ get_vms_ids.results }}"
 
 - debug: var=vms
 
+- debug: var="{{ manageiq_provider_url }}/{{ prov_id }}"
+
 - name: Register vms with the service
   uri:
     # url: "{{ manageiq.api_url }}/api/services"
-    url: "{{ manageiq_api_url }}/api/services"
+    # url: "{{ manageiq_api_url }}/api/services"
+    url: "{{ manageiq_api_url }}{{ svc_url }}"
     method: POST
     body_format: json
     body:
-      action: add_resource
-      resources : "{{ vms }}"
+      # action: add_resource
+      action: add_provider_vms
+      # resources : "{{ vms }}"
+      resource :
+        #provider: { "href": "{{ provider_info.json.results[0].href }}" }
+        provider: { "href": "{{ manageiq_provider_url }}/{{ prov_id }}" }
+        uid_ems: "{{ vms }}"
     validate_certs: False
     headers:
       #X-Auth-Token: "{{ manageiq.api_token }}"
