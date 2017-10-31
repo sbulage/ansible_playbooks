@@ -66,7 +66,7 @@
 - name: Create an array of vms
   set_fact:
     # vms: "{{ vms|default([]) + [ { 'href': svc_url, 'resource':  { 'href': item.json.resources[0].href } } ] }}"
-    vms: "{{ vms|default([]) + [ 'uid_ems': item.json.resources[0].ems_ref } } ] }}"
+    vms: "{{ vms|default([]) + [ 'uid_ems': item.json.resources[0].ems_ref  ] }}"
   with_items: "{{ get_vms_ids.results }}"
 
 - debug: var=vms
