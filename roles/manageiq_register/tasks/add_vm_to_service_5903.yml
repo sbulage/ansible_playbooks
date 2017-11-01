@@ -75,7 +75,6 @@
 
 - name: Register vms with the service
   uri:
-    # url: "{{ manageiq.api_url }}/api/services"
     # url: "{{ manageiq_api_url }}/api/services"
     url: "{{ manageiq_api_url }}{{ svc_url }}"
     method: POST
