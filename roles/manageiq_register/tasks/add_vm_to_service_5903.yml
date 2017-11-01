@@ -71,7 +71,7 @@
 
 - debug: var=vms
 
-- debug: var="{{ manageiq_provider_url }}/{{ prov_id }}"
+- debug: msg="{{ manageiq_provider_url }}/{{ prov_id }}"
 
 - name: Register vms with the service
   uri:
