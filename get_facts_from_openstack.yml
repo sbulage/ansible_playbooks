@@ -4,7 +4,6 @@
   tasks:
   # Gather facts about all servers named C<web*>:
   - os_server_facts:
-      server: *
-    register: openstack_instances
+      timeout: 60
   - debug:
       var: openstack_instances
