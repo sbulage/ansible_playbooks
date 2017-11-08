@@ -1,0 +1,11 @@
+- name: Collect facts from Openstack instances
+  hosts: all
+  vars:
+  tasks:
+  # Gather facts about all servers named C<web*>:
+  - os_server_facts:
+      cloud: rax-dfw
+      server: web*
+    register: openstack_instances
+  - debug:
+      var: openstack_instances
