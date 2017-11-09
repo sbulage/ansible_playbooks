@@ -6,8 +6,14 @@
   - name: Get facts about servers
     local_action:
       module: rax_facts
-      name: "{{ inventory_hostname }}"
+      # name: "{{ inventory_hostname }}"
+      name: miq-bot
       region: IAD
-  - name: Map some facts
-    set_fact:
-      ansible_ssh_host: "{{ rax_accessipv4 }}"
+    register: myfacts
+
+  - name: show facts
+    debug:
+      var=myfacts
+  # - name: Map some facts
+  #  set_fact:
+  #    ansible_ssh_host: "{{ rax_accessipv4 }}"
