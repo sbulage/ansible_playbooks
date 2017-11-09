@@ -1,0 +1,13 @@
+- name: Collect facts from Rackspace Cloud
+  hosts: all
+  gather_facts: False
+  vars:
+  tasks:
+  - name: Get facts about servers
+    local_action:
+      module: rax_facts
+      name: "{{ inventory_hostname }}"
+      region: IAD
+  - name: Map some facts
+    set_fact:
+      ansible_ssh_host: "{{ rax_accessipv4 }}"
