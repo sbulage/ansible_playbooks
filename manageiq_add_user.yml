@@ -15,7 +15,7 @@
   - name: Install manageiq api client module when playbook is executed on Ansible Tower/Embedded
     delegate_to: "{{ manageiq_host | default('localhost') }}"
     pip:
-      virtualenv: /var/lib/awx/venv/ansible/bin/activate
+      virtualenv: /var/lib/awx/venv/ansible/
       name: git+https://github.com/ManageIQ/manageiq-api-client-python.git
     when: manageiq.api_token is defined
   
