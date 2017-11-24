@@ -8,6 +8,5 @@
     environment:
       OS_PROJECT_DOMAIN_NAME: Default 
     register: myfacts
-    no_log: true
   - debug:
       var: myfacts
