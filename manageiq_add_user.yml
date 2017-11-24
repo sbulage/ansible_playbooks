@@ -1,6 +1,6 @@
 ---
 - name: Get auth token from manageiq and create new user
-  hosts: lokal
+  hosts: all
   gather_facts: no
   vars:
     manageiq_user: admin
