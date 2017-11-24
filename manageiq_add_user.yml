@@ -5,13 +5,13 @@
   vars:
     manageiq_user: admin
     manageiq_pass: smartvm
-    manageiq_auth_url: "https://{{ manageiq_host }}/api/auth"
-    manageiq_url: "https://{{ manageiq_host }}"
+    manageiq_auth_url: "https://{{ manageiq_host | default('localhost') }}/api/auth"
+    manageiq_url: "https://{{ manageiq_host | default('localhost') }}"
   tasks:
-  - name: Check
-    fail:
-      msg: "manageiq_host variable is not set. Set this var to the IP or hostname of ManageIQ appliance."
-    when: manageiq_host is not defined
+  # - name: Check
+  #  fail:
+  #    msg: "manageiq_host variable is not set. Set this var to the IP or hostname of ManageIQ appliance."
+  #  when: manageiq_host is not defined
   
   - name: Get token from ManageIQ
     uri:
