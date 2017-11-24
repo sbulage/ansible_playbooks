@@ -5,6 +5,9 @@
   # Gather facts about all servers named C<web*>:
   - os_server_facts:
       timeout: 60
+    environment:
+      OS_PROJECT_DOMAIN_NAME: Default 
     register: myfacts
+    no_log: true
   - debug:
       var: myfacts
