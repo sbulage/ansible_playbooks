@@ -17,7 +17,7 @@
     pip:
       virtualenv: . /var/lib/awx/venv/ansible/bin/activate
       name: git+https://github.com/ManageIQ/manageiq-api-client-python.git
-    when: manageiq.token is defined
+    when: manageiq.api_token is defined
   
   - name: Get token from ManageIQ
     uri:
