@@ -6,8 +6,8 @@
   - os_server_facts:
       timeout: 60
     environment:
-      OS_PROJECT_DOMAIN_NAME: Default 
-      OS_USER_DOMAIN_NAME: Default
+      OS_PROJECT_DOMAIN_NAME: default 
+      # OS_USER_DOMAIN_NAME: default
     register: myfacts
   - debug:
       var: myfacts
