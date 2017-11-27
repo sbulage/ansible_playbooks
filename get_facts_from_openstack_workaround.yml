@@ -3,7 +3,8 @@
   vars:
   tasks:
   - include_vars:
-      file: "{{ lookup('file', '/var/tmp/openstack_creds') }}"
+      # file: "{{ lookup('file', '/var/tmp/openstack_creds') }}"
+      file: '/var/tmp/openstack_creds'
       name: os_creds
   - os_server_facts:
       timeout: 60
