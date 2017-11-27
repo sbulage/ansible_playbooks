@@ -1,10 +1,10 @@
 - name: Collect facts from Openstack instances - workaround
   hosts: all
   vars:
-    OS_CLIENT_CONFIG_FILE: '/var/tmp/openstack_creds'
+    os_conf_file: '/var/tmp/openstack_creds'
   tasks:
   - include_vars:
-      file: "{{ lookup('file', 'OS_CLIENT_CONFIG_FILE') }}"
+      file: "{{ lookup('file', '{{ os_conf_file }}') }}"
       name: os_creds
     no_log: true
   - os_server_facts:
