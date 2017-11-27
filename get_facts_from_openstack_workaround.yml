@@ -4,7 +4,7 @@
     OS_CLIENT_CONFIG_FILE: '/root/openstack_creds'
   tasks:
   - include_vars:
-      file: "{{ lookup('env', 'OS_CLIENT_CONFIG_FILE') }}"
+      file: "{{ lookup('file', 'OS_CLIENT_CONFIG_FILE') }}"
       name: os_creds
     no_log: true
   - os_server_facts:
