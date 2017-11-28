@@ -1,0 +1,22 @@
+- name: Collect facts from Openstack instances
+  hosts: all
+  vars:
+  tasks:
+  # Read credentials from temporary yaml file
+  - include_vars:
+      file: "{{ lookup('env', 'OS_CLIENT_CONFIG_FILE') }}"
+      name: os_creds
+    no_log: true
+  - os_server_facts:
+      timeout: 60
+    register: myfacts
+    environment:
+      OS_USERNAME: "{{ os_creds.clouds.devstack.auth.username }}"
+      OS_PASSWORD: "{{ os_creds.clouds.devstack.auth.password }}"
+      OS_AUTH_URL: "{{ os_creds.clouds.devstack.auth.auth_url }}"
+      OS_PROJECT_NAME: "{{ os_creds.clouds.devstack.auth.project_name }}"
+      OS_USER_DOMAIN_NAME: "{{ os_creds.clouds.devstack.auth.domain_name }}"
+      OS_PROJECT_DOMAIN_NAME: "{{ os_creds.clouds.devstack.auth.domain_name }}"
+    no_log: true
+  - debug:
+      var: myfacts
