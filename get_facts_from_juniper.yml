@@ -1,0 +1,8 @@
+- name: Collect facts from Juniper device
+  hosts: all
+  vars:
+  tasks:
+    - name: collect default set of facts and configuration in text format
+      junos_facts:
+        config: yes
+        config_format: text
