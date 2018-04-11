@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  tags: infra
+  tasks:
+  - name: Obtain SSO token with using username/password credentials
+    ovirt_auth:
+      insecure: True
+
+  - ovirt_vms_facts:
+    auth: "{{ ovirt_auth }}"
+    pattern: name=*
+
+  - debug:
+    var: ovirt_vms
