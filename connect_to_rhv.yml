@@ -3,6 +3,14 @@
   connection: local
   tags: infra
   tasks:
+  - name: Debug
+      msg="{{ lookup('env', {{ item }}) }}"
+    with_items:
+      - OVIRT_PASSWORD
+      - OVIRT_TOKEN
+      - OVIRT_USERNAME
+      - OVIRT_URL
+
   - name: Obtain SSO token with using username/password credentials
     ovirt_auth:
       insecure: True
