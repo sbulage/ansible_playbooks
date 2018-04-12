@@ -4,7 +4,8 @@
   tags: infra
   tasks:
   - name: Debug
-      msg: '{{ lookup("env", {{ item }}) }}'
+    debug:
+      msg: "{{ lookup('env',  {{ item }} ) }}"
     with_items:
       - OVIRT_PASSWORD
       - OVIRT_TOKEN
