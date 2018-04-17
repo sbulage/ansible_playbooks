@@ -15,6 +15,9 @@
   - name: Obtain SSO token with using username/password credentials
     ovirt_auth:
       insecure: True
+      url: "{{ lookup('env','OVIRT_URL') }}"
+      username: "{{ lookup('env','OVIRT_USERNAME') }}"
+      password: "{{ lookup('env','OVIRT_PASSWORD') }}"
 
   - ovirt_vms_facts:
     auth: "{{ ovirt_auth }}"
