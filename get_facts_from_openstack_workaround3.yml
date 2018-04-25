@@ -6,7 +6,7 @@
   - include_vars:
       file: "{{ lookup('env', 'OS_CLIENT_CONFIG_FILE') }}"
       name: os_creds
-    no_log: true
+    no_log: false
   - os_server_facts:
       timeout: 60
     register: myfacts
@@ -17,6 +17,6 @@
       OS_PROJECT_NAME: "{{ os_creds.clouds.devstack.auth.project_name }}"
       OS_USER_DOMAIN_NAME: "{{ os_creds.clouds.devstack.auth.domain_name }}"
       OS_PROJECT_DOMAIN_NAME: "{{ os_creds.clouds.devstack.auth.domain_name }}"
-    no_log: true
+    no_log: false
   - debug:
       var: myfacts
