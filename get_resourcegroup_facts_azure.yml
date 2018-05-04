@@ -1,0 +1,7 @@
+- name: Collect facts about RG from Azure
+  hosts: all
+  gather_facts: True
+  vars:
+  tasks:
+    - name: Get facts for all resource groups
+      azure_rm_resourcegroup_facts:
