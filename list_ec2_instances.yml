@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Get facts about all EC2 instances
+      ec2_instance_facts:
+      register: ec2_facts
+    
+    - name: Print facts
+      debug: msg="{{ ec2_facts }}"
+
