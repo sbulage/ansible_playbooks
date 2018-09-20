@@ -1,0 +1,8 @@
+---
+- name: Hello World Sample Playbook. Run this on Machine.
+  hosts: all
+  tasks:
+    - name: Hello Message
+      debug:
+        msg: "Hello World!"
+
