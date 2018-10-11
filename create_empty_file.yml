@@ -1,0 +1,10 @@
+---
+- name: Creating empty file using Ansible playbook
+  hosts: all
+  user: root
+  tasks:
+    - shell: touch /test_ansible_file
+      state: present
+      register: file_output
+    - debug: msg="The file with the given name has been created --> {{ file_output.stdout }}"
+
