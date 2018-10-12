@@ -3,8 +3,7 @@
   hosts: all
   user: root
   tasks:
-    - shell: touch /test_ansible_file
-      state: present
-      register: file_output
-    - debug: msg="The file with the given name has been created --> {{ file_output.stdout }}"
-
+  - name: Ansible create file if it doesn't exist example
+    file:
+      path: "/test_ansible_file"
+      state: touch
