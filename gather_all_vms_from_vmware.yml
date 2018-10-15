@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: all
   tags: infra
   roles:
     - { role: dump_all_variables, tags: ['dump_vars'] }
