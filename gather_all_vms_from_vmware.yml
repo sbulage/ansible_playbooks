@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Gather Facts around VMWare VMs.
+  hosts: all
   tags: infra
   roles:
     - { role: dump_all_variables, tags: ['dump_vars'] }
