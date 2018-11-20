@@ -1,0 +1,9 @@
+---
+- name: Creating empty file using Ansible playbook
+  hosts: all
+  user: root
+  tasks:
+  - name: Ansible create file if it doesn't exist example
+    file:
+      path: "~/{{ filename }}"
+      state: touch
