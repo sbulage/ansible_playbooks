@@ -11,9 +11,6 @@
   - object: root
   
   tasks:
-    - debug:
-      msg: State retry number {{ workspace.workspace.input.objects.root.ae_state_retries }}
-
     - name: Set Retry
       manageiq_automate:
         workspace: "{{ workspace }}"
