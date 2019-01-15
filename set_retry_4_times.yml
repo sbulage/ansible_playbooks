@@ -6,10 +6,9 @@
 - name: Set retry interval with input
   hosts: localhost
   connection: local
+  gather_facts: False
   vars:
   - object: root
-
-  gather_facts: False
   
   tasks:
     - debug:
