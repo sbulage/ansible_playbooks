@@ -4,7 +4,7 @@
   tasks:
     - name: Get facts about all EC2 instances
       ec2_instance_facts:
-        region: eu-central-1
+        region: ap-south-1
       register: ec2_facts
 
     - name: Print facts
