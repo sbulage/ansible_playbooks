@@ -1,0 +1,6 @@
+---
+- name: Do nothing for 60 minutes (or more)
+  hosts: all
+  tasks:
+  - shell: sleep 60
+    with_sequence: start=0 count=65 format=blah%x
