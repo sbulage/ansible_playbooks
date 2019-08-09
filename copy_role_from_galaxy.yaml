@@ -1,0 +1,8 @@
+---
+- debug:
+    msg: "Copying 'Users' role from Ansible Galaxy."
+- copy:
+    content: >
+      - src: singleplatform-eng.users
+    dest: ./requirements.yml
+- command: ansible-galaxy install -r ./requirements.yml
