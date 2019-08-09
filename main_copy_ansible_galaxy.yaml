@@ -1,0 +1,6 @@
+---
+- hosts: all
+  connection: local
+  tasks:
+  - include_tasks: copy_role_from_galaxy.yaml
+  - include_tasks: use_role.yaml
