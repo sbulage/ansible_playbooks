@@ -1,5 +1,0 @@
----
-- hosts: all
-  connection: local
-  tasks:
-  - include_tasks: use_role.yaml
