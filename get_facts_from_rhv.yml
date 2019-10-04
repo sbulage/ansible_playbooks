@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  connection: local
+  tags: infra
+  tasks:
+   - name: Debug
+     debug:
+       msg: "{{ lookup('env',  item) }}"
+     with_items:
+       - OVIRT_PASSWORD
+       - OVIRT_TOKEN
+       - OVIRT_USERNAME
+       - OVIRT_URL
+
+   - name: Obtain SSO token with using username/password credentials
+     ovirt_auth:
+       insecure: True
+       url: "{{ lookup('env','OVIRT_URL') }}"
+       username: "{{ lookup('env','OVIRT_USERNAME') }}"
+       password: "{{ lookup('env','OVIRT_PASSWORD') }}"
+
+   - name: ss
+     ovirt_vm_facts:
+       auth: "{{ ovirt_auth }}"
+       pattern: name=*
+   - debug: 
+       var: ovirt_vms
+...
