@@ -1,0 +1,24 @@
+  - name: Get task details from CloudForms
+    hosts: localhost
+    gather_facts: no
+    connection: local
+
+    tasks:
+      - name: Print manageiq input var
+        debug: var=manageiq
+      
+      - name: Get Task from CloudForms
+        uri:
+          url: "{{ manageiq.api_url }}/api/{{ manageiq.request_task }}"
+          method: GET
+          force_basic_auth: yes
+          body_format: json
+          return_content: yes
+          validate_certs: no
+          headers:
+            X-Auth-Token: "{{ manageiq.api_token }}"
+        register: output
+
+      - name: Debug
+        debug:
+          var: output
