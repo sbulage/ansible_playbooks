@@ -1,0 +1,7 @@
+---
+- name: Hello World Sample Playbook. Run this on Machine.
+  hosts: all
+  tasks:
+    - name: Hello Message from Nested folder
+      debug:
+        msg: "Hello World! from nested folder."
